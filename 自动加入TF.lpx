@@ -14,8 +14,6 @@
 #!date = 2025-09-21 01:17:08
 
 [Argument]
-CaptureAccountToken = switch, "false", "true", tag = 捕获账号令牌, desc = 此开关控制插件是否捕获账户令牌
-# CaptureAppID = switch, "false", "true", tag = 捕获应用ID, desc = 此开关控制插件是否捕获应用ID
 RunTask = switch, "false", "true", tag = 运行自动加入TF, desc = 此开关控制是否启动定时任务
 RunMonitor = switch, "true", "false", tag = 运行监控TF位置, desc = 此开关控制是否启动定时任务
 TaskCron = input, "0 0/3 * * * ?", tag = 加入TF定时参数, desc = 这里需要输入符合CRON表达式的参数
