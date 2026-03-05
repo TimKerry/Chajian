@@ -1,0 +1,26 @@
+#!name=Spotify去广告
+#!desc=Spotify去广告加部分解锁会员功能,音质不能设置为超高,初期可能会登出二到三次,重新登录即可。
+#!icon=https://img.icons8.com/?size=100&id=ZuQiaFCa1vXe&format=png&color=000000
+#!date=260304
+
+[Rule]
+AND,((DOMAIN-SUFFIX, spotify.com), (PROTOCOL, QUIC)),REJECT
+
+[Rewrite]
+^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/user-customization-service\/v1\/customize header-del if-none-match
+^https:\/\/(?:\w+-spclient|spclient\.wg)\.spotify\.com(?::443)?\/pendragon\/ reject-dict
+^https:\/\/spclient\.wg\.spotify\.com\/pushka-tokens\/ reject-200
+^https:\/\/.*-spclient\.spotify\.com(:443)?\/gabo-receiver-service\/ reject-200
+^https:\/\/spclient\.wg\.spotify\.com(:443)?\/gabo-receiver-service\/ reject-dict
+^https:\/\/spclient\.wg\.spotify\.com(:443)?\/ad reject-dict
+^https:\/\/spclient\.wg\.spotify\.com(:443)?\/offline reject-dict
+^https:\/\/.*-spclient\.spotify\.com(:443)?\/offline reject-dict
+# ^https:\/\/.*-spclient\.spotify\.com(:443)?\/playlist\/v2\/playlist\/37i9d[a-zA-Z0-9]+\/ reject-200
+
+[Mitm]
+hostname = spclient.wg.spotify.com, *spclient.spotify.com
+
+[Script]
+#http-request ^https:\/\/spclient.wg.spotify.com\/pushka-tokens\/.* script-path=https://raw.githubusercontent.com/Amlabort/MY_clash/refs/heads/main/files/lpx/js/spot-delete-deny.js, timeout=10, tag=spotify-deny
+http-request ^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(artistview\/v1\/artist|album-entity-view\/v2\/album)\/ script-path=https://raw.githubusercontent.com/Amlabort/MY_clash/refs/heads/main/files/lpx/js/spot-Json-copy.js, timeout=10, tag=spotify-json
+http-response ^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)(\?.*)?$ script-path=https://raw.githubusercontent.com/Amlabort/MY_clash/refs/heads/main/files/lpx/js/spot-proto-copy.js, requires-body=true, binary-body-mode=true, timeout=10, tag=spotifyProto
