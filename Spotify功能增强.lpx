@@ -1,0 +1,16 @@
+#!name=Spotify
+#!desc=功能增强
+#!icon=https://github.com/Toperlock/Quantumult/raw/main/icon/Doraemon/Doraemon-1062.png
+#!tag=App
+
+[Argument]
+Mock=input,https://mock.trigram-masques-8r.workers.dev/music,tag=Mock, desc=Mock
+
+[Rewrite]
+# 移除追踪
+^https:\/\/(?:spclient\.wg|[a-z0-9]+-spclient)\.spotify\.com(?::443)?\/(?:ad-|gabo|pendragon|social) - reject
+# 移除广告
+^https:\/\/(?:spclient\.wg|[a-z0-9]+-spclient)\.spotify\.com(?::443)?\/(user-customization-service|bootstrap) {Mock}/$1 header
+
+[MITM]
+hostname = spclient.wg.spotify.com, g*-spclient.spotify.com
